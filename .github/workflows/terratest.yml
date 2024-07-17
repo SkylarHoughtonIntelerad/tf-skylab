@@ -1,0 +1,66 @@
+name: terratest
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  detect-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.17'
+
+    - name: Get changed files
+      id: changed-files
+      run: |
+        echo "Changed files:"
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+        cat changed_files.txt
+
+    # - name: Determine directories to test
+    #   id: directories-to-test
+    #   run: |
+    #     # Initialize an empty list of directories
+    #     DIRECTORIES=""
+
+    #     # Loop through each changed file
+    #     while read FILE; do
+    #       # Check if the file is within a Terraform directory
+    #       if [[ "$FILE" == infrastructure/terraform/* ]]; then
+    #         # Extract the directory path
+    #         DIR=$(dirname "$FILE")
+    #         # Add the directory to the list if not already added
+    #         if [[ ! "$DIRECTORIES" =~ "$DIR" ]]; then
+    #           DIRECTORIES="$DIRECTORIES $DIR"
+    #         fi
+    #       fi
+    #     done < changed_files.txt
+
+    #     # Output the list of directories
+    #     echo "directories-to-test=$DIRECTORIES" >> $GITHUB_ENV
+    #     echo "Directories to test: $DIRECTORIES"
+
+    # - name: Run Terratest
+    #   run: |
+    #     for DIR in ${{ env.directories-to-test }}; do
+    #       cd $DIR
+    #       go mod download
+    #       terraform init
+    #       go test -v ./test/...
+    #       cd - # Go back to the previous directory
+    #     done
+
+    # - name: Upload Test Results
+    #   if: failure()
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: test-results
+    #     path: /path/to/test-results
