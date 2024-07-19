@@ -35,14 +35,10 @@ jobs:
         done
         echo $changed_dirs
         echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
-
-    - name: init Golang
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.17'
        
     - name: Run Terratest
       run: |
+        cd ${{ env.base_dir }}/test/
         for dir in ${{ env.changed_dirs }}; do
           ls -al
           go mod download
