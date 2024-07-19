@@ -33,7 +33,7 @@ jobs:
         for dir in $EXCLUDED_DIRS; do
           changed_dirs = $(echo "$changed_dirs" | grep -v "^$dir")
         done
-        echo "changed-dirs=$changed_dirs" >> $GITHUB_ENV
+        echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
 
     # - name: Set up Go
     #   uses: actions/setup-go@v4
