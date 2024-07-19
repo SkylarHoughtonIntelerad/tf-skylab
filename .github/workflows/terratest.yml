@@ -30,7 +30,7 @@ jobs:
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
         echo $changed_dirs
-        echo "changed_dirs=$changed_dirs" >> $changed_dirs
+        echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
     
     - run: echo ${{ env.changed_dirs }}
 
