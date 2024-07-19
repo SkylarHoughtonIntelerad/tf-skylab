@@ -29,6 +29,7 @@ jobs:
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
+        cat $changed_dirs
         echo "changed_dirs=$changed_dirs" >> $changed_dirs
     
     - run: echo ${{ env.changed_dirs }}
