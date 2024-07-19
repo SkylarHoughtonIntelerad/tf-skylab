@@ -21,17 +21,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    - run: |
-       ls -al
-       pwd
-
     # TODO: Determine changed_files match what is expected
     - name: Get changed dir
       id: changed-dir
       run: |
         changed_dirs=$(git diff --name-only origin/${{ github.event.repository.default_branch }} origin/${{ github.head_ref }} | xargs dirname | sort | uniq)
         for dir in $EXCLUDED_DIRS; do
-          changed_dirs = $(echo "$changed_dirs" | grep -v "^$dir")
+          changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
         echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
 
