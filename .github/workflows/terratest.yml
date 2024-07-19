@@ -12,6 +12,8 @@ on:
 jobs:
   detect-and-test:
     runs-on: ubuntu-latest
+    env:
+      EXCLUDED_DIRS: ".github" #space-delimited list for multiple exclusions
 
     steps:
     - name: Checkout code
@@ -27,8 +29,11 @@ jobs:
     - name: Get changed dir
       id: changed-dir
       run: |
-        git diff --name-only origin/${{ github.event.repository.default_branch }} origin/${{ github.head_ref }} | xargs dirname | sort | uniq | grep -v ".github"
-        cat changed_dirs.txt
+        changed_dirs=$(git diff --name-only origin/${{ github.event.repository.default_branch }} origin/${{ github.head_ref }} | xargs dirname | sort | uniq)
+        for dir in $EXCLUDED_DIRS; do
+          changed_dirs = $(echo "$changed_dirs" | grep -v "^$dir")
+        done
+        echo "changed-dirs=$changed_dirs" >> $GITHUB_ENV
 
     # - name: Set up Go
     #   uses: actions/setup-go@v4
