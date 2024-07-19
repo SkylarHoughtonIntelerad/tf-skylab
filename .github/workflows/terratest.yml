@@ -26,7 +26,7 @@ jobs:
       id: changed-dir
       run: |
         echo "Changed dir:"
-        git diff --name-only ${{ github.event.repository.default_branch }} ${{ github.head_ref }} > changed_files.txt
+        git diff --name-only origin/${{ github.event.repository.default_branch }} ${{ github.head_ref }} > changed_files.txt
         cat changed_dirs.txt
 
     # - name: Set up Go
