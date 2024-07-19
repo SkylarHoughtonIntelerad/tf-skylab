@@ -31,7 +31,7 @@ jobs:
         done
         echo "changed_dirs=$changed_dirs" >> $changed_dirs
     
-    - run: echo ${{ changed_dirs }}
+    - run: echo ${{ env.changed_dirs }}
 
     # - name: Set up Go
     #   uses: actions/setup-go@v4
