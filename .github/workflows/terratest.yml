@@ -21,6 +21,13 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Get base dir
+      run: |
+        base_dir=$(pwd)
+        echo "base_dir=$base_dir" >> $GITHUB_ENV
+    
+    - run: echo ${{ env.base_dir }}
+
     - name: Get changed dir
       id: changed-dir
       run: |
@@ -30,8 +37,6 @@ jobs:
         done
         echo $changed_dirs
         echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
-    
-    # - run: echo ${{ env.changed_dirs }}
 
     - name: init Golang
       uses: actions/setup-go@v4
@@ -44,7 +49,7 @@ jobs:
           cd $dir
           go mod download
           terraform init
-          go test -v ./test/...
+          go test -v ${{ env.base_dir }}/test/...
         done
 
     # TODO: determine best way to pair success runs with commit hash, and store in dir that was ran against. Succeed workflow if recorded hash is before the one that was successful
