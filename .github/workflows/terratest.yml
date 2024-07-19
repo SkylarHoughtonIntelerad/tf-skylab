@@ -17,7 +17,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - run: echo ${{ github.head_ref }}
+    - run: |
+       ls
+       pwd
 
     # TODO: Determine changed_files match what is expected
     - name: Get changed dir
