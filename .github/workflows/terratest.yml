@@ -40,6 +40,7 @@ jobs:
       run: |
         cd ${{ env.base_dir }}/test/
         go mod download
+        ls ${{ env.base_dir }}/test/
         for dir in ${{ env.changed_dirs }}; do
           cd ${{ env.base_dir }}
           ls -al
