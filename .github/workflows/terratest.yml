@@ -47,6 +47,7 @@ jobs:
           cd $dir
           go mod download
           terraform init
+          ls -al
           go test -v ${{ env.base_dir }}/test/...
         done
 
