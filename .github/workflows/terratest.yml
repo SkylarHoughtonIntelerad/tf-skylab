@@ -13,7 +13,7 @@ jobs:
   detect-and-test:
     runs-on: ubuntu-latest
     env:
-      EXCLUDED_DIRS: ".github" #space-delimited list for multiple exclusions
+      EXCLUDED_DIRS: ".github test" #space-delimited list for multiple exclusions
 
     steps:
     - name: Checkout code
@@ -25,8 +25,6 @@ jobs:
       run: |
         base_dir=$(pwd)
         echo "base_dir=$base_dir" >> $GITHUB_ENV
-    
-    - run: echo ${{ env.base_dir }}
 
     - name: Get changed dir
       id: changed-dir
