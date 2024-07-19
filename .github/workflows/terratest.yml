@@ -39,9 +39,10 @@ jobs:
     - name: Run Terratest
       run: |
         cd ${{ env.base_dir }}/test/
+        go mod download
         for dir in ${{ env.changed_dirs }}; do
+          cd ${{ env.base_dir }}
           ls -al
-          go mod download
           cd $dir
           terraform init
           go test -v ${{ env.base_dir }}/test/...
