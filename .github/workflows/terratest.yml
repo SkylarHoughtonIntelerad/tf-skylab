@@ -1,3 +1,4 @@
+# useful comment
 name: terratest
 
 on:
@@ -28,6 +29,7 @@ jobs:
         echo "Changed files:"
         git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
         cat changed_files.txt
+        
 
     # TODO: Test dir looping
     # - name: Determine directories to test
