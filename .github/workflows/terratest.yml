@@ -25,19 +25,20 @@ jobs:
         echo "base_dir=$base_dir" >> $GITHUB_ENV
 
     - name: Get changed dir
-      id: changed-dir
       run: |
         changed_dirs=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} | xargs dirname | sort | uniq)
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
-        echo $changed_dirs
-        echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
-       
+        echo $changed_dirs >> changed_dirs.txt
+
     - name: Run Terratest
       run: |
-        cd ${{ env.base_dir }}/$TEST_PATH/
-        for dir in ${{ env.changed_dirs }}; do
+        changed_dirs=$(cat changed_dirs.txt)
+        for dir in $changed_dirs; do
+          echo "------------------------------"
+          echo "Test against: ${{ env.base_dir }}/$dir" 
           cd ${{ env.base_dir }}/$dir
           go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
+          echo "------------------------------"
         done
