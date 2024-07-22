@@ -17,6 +17,12 @@ func runCommand(t *testing.T, name string, args ...string) (string, error) {
 }
 
 func TestTerraformInit(t *testing.T) {
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Failed to get current working directory: %v", err)
+	}
+	t.Logf("Current working directory: %s", cwd)
+	
 	output, err := runCommand(t, "terraform", "init", "-input=false")
 	if err != nil {
 		t.Fatalf("terraform init failed: %v\nOutput: %s", err, output)
