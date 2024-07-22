@@ -35,6 +35,7 @@ jobs:
     - name: Run Terratest
       run: |
         changed_dirs=$(cat changed_dirs.txt)
+        echo $changed_dirs
         for dir in $changed_dirs; do
           echo "------------------------------"
           echo "Test against: ${{ env.base_dir }}/$dir"
