@@ -35,6 +35,7 @@ jobs:
     - name: Run Terratest
       run: |
         changed_dirs=$(cat changed_dirs.txt)
+        cat $changed_dirs
         for dir in $changed_dirs; do
           echo "------------------------------"
           echo "Test against: ${{ env.base_dir }}/$dir"
@@ -42,8 +43,8 @@ jobs:
             cd ${{ env.base_dir }}/$dir
             go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
           else
-            echo "Directory does not exist: $dir"
+            echo "Directory does not exist on non-default branch: $dir"
+            echo "Cannot execute test."
           fi
           echo "------------------------------"
-          
         done
