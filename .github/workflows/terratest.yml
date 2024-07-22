@@ -31,17 +31,12 @@ jobs:
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
-        echo $changed_dirs
         echo $changed_dirs >> changed_dirs.txt
-    - run: | 
+
+    - name: Run Terratest
+      run: |
         changed_dirs=$(cat changed_dirs.txt)
-        for dir in $changed_dirs; do
-          ls ${{ env.base_dir }}/$dir
+        for dir in ${{ changed_dirs }}; do
+          cd ${{ env.base_dir }}/$dir
+          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
         done
-    # - name: Run Terratest
-    #   run: |
-    #     cd ${{ env.base_dir }}/$TEST_PATH/
-    #     for dir in ${{ env.changed_dirs }}; do
-    #       cd ${{ env.base_dir }}/$dir
-    #       go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
-    #     done
