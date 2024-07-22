@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"os/exec"
 	"testing"
 )
@@ -9,6 +10,7 @@ import (
 // Helper function to run a command and capture its output
 func runCommand(dir string, name string, args ...string) (string, error) {
 	cmd := exec.Command(name, args...)
+	cmd.Dir = dir
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &out
