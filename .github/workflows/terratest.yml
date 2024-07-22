@@ -43,6 +43,7 @@ jobs:
         go mod download
         for dir in ${{ env.changed_dirs }}; do
           cd ${{ env.base_dir }}/$dir
-          terraform init
+          ls
+          pwd
           go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
         done
