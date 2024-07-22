@@ -39,4 +39,6 @@ jobs:
           echo "Test against: ${{ env.base_dir }}/$dir" 
           cd ${{ env.base_dir }}/$dir
           go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
+          echo "------------------------------"
+          echo -e "\n"
         done
