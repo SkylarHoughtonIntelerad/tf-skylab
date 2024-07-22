@@ -25,7 +25,6 @@ jobs:
         echo "base_dir=$base_dir" >> $GITHUB_ENV
 
     - name: Get changed dir
-      id: changed-dir
       run: |
         changed_dirs=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} | xargs dirname | sort | uniq)
         for dir in $EXCLUDED_DIRS; do
