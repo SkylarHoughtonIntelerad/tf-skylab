@@ -42,7 +42,7 @@ jobs:
         cd ${{ env.base_dir }}/$TEST_PATH/
         go mod download
         for dir in ${{ env.changed_dirs }}; do
-          cd $dir
+          cd ${{ env.base_dir }}/$dir
           terraform init
           pwd
           go test -v ${{ env.base_dir }}/$TEST_PATH/...
