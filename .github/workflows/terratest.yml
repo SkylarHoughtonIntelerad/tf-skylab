@@ -44,6 +44,5 @@ jobs:
         for dir in ${{ env.changed_dirs }}; do
           cd ${{ env.base_dir }}/$dir
           terraform init
-          output=$(go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE)
-          cat $output >> ${{ env.base_dir }}/$dir/terratest.txt
+          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
         done
