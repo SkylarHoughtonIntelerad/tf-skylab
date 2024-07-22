@@ -1,72 +1,43 @@
 name: terratest
 
 on:
-  push:
-    branches:
-    - main
   pull_request:
     branches:
       - main
 
 jobs:
-  detect-and-test:
+  terratest:
     runs-on: ubuntu-latest
+    env:
+      EXCLUDED_DIRS: ".github test" #space-delimited list for multiple exclusions
+      TEST_PATH: "test"
+      TEST_FILE: "tf_test.go"
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
       with:
-        go-version: '1.17'
+        fetch-depth: 0
 
-    # TODO: Determine changed_files match what is expected
-    - name: Get changed files
-      id: changed-files
+    - name: Get base dir
       run: |
-        echo "Changed files:"
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
-        cat changed_files.txt
+        base_dir=$(pwd)
+        echo "base_dir=$base_dir" >> $GITHUB_ENV
 
-    # TODO: Test dir looping
-    # - name: Determine directories to test
-    #   id: directories-to-test
-    #   run: |
-    #     # Initialize an empty list of directories
-    #     DIRECTORIES=""
-
-    #     # Loop through each changed file
-    #     while read FILE; do
-    #       # Check if the file is within a Terraform directory
-    #       if [[ "$FILE" == infrastructure/terraform/* ]]; then
-    #         # Extract the directory path
-    #         DIR=$(dirname "$FILE")
-    #         # Add the directory to the list if not already added
-    #         if [[ ! "$DIRECTORIES" =~ "$DIR" ]]; then
-    #           DIRECTORIES="$DIRECTORIES $DIR"
-    #         fi
-    #       fi
-    #     done < changed_files.txt
-
-    #     # Output the list of directories
-    #     echo "directories-to-test=$DIRECTORIES" >> $GITHUB_ENV
-    #     echo "Directories to test: $DIRECTORIES"
-
-    # - name: Run Terratest
-    #   run: |
-    #     for DIR in ${{ env.directories-to-test }}; do
-    #       cd $DIR
-    #       go mod download
-    #       terraform init
-    #       go test -v ./test/...
-    #       cd - # Go back to the previous directory
-    #     done
-
-    # TODO: determine best way to pair success runs with commit hash, and store in dir that was ran against. Succeed workflow if recorded hash is before the one that was successful
-    # - name: Upload Test Results
-    #   if: failure()
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: test-results
-    #     path: /path/to/test-results
+    - name: Get changed dir
+      id: changed-dir
+      run: |
+        changed_dirs=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} | xargs dirname | sort | uniq)
+        for dir in $EXCLUDED_DIRS; do
+          changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
+        done
+        echo $changed_dirs
+        echo "changed_dirs=$changed_dirs" >> $GITHUB_ENV
+       
+    - name: Run Terratest
+      run: |
+        cd ${{ env.base_dir }}/$TEST_PATH/
+        for dir in ${{ env.changed_dirs }}; do
+          cd ${{ env.base_dir }}/$dir
+          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
+        done
