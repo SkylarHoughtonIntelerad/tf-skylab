@@ -41,12 +41,10 @@ jobs:
       run: |
         cd ${{ env.base_dir }}/$TEST_PATH/
         go mod download
-        ls ${{ env.base_dir }}/$TEST_PATH/
         for dir in ${{ env.changed_dirs }}; do
-          cd ${{ env.base_dir }}
-          ls -al
           cd $dir
           terraform init
+          pwd
           go test -v ${{ env.base_dir }}/$TEST_PATH/...
         done
 
