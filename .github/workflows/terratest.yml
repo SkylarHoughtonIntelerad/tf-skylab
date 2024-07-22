@@ -28,7 +28,7 @@ jobs:
     - name: Get changed dir
       id: changed-dir
       run: |
-        changed_dirs=$(git diff --name-only origin/${{ github.event.repository.default_branch }} origin/${{ github.head_ref }} | xargs dirname | sort | uniq)
+        changed_dirs=$(git diff --name-only origin/${{ github.event.repository.default_branch }} origin/${{ github.event.pull_request.base.ref }} | xargs dirname | sort | uniq)
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
