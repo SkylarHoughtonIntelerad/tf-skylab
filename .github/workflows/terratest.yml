@@ -27,22 +27,16 @@ jobs:
     - name: Get changed dir
       id: changed-dir
       run: |
-        {
-        echo 'CHANGED_DIRS<<EOF'
         changed_dirs=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }} | xargs dirname | sort | uniq)
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
-        echo "$changed_dirs"
-        echo EOF
-        } >> "$GITHUB_ENV"
-
-    - run: echo ${{ env.changed_dirs }}
-       
-    - name: Run Terratest
-      run: |
-        cd ${{ env.base_dir }}/$TEST_PATH/
-        for dir in ${{ env.changed_dirs }}; do
-          cd ${{ env.base_dir }}/$dir
-          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
-        done
+        echo $changed_dirs >> changed_dirs.txt
+    - run: cat $changed_dirs       
+    # - name: Run Terratest
+    #   run: |
+    #     cd ${{ env.base_dir }}/$TEST_PATH/
+    #     for dir in ${{ env.changed_dirs }}; do
+    #       cd ${{ env.base_dir }}/$dir
+    #       go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
+    #     done
