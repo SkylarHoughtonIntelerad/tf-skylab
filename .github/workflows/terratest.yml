@@ -30,12 +30,11 @@ jobs:
         for dir in $EXCLUDED_DIRS; do
           changed_dirs=$(echo "$changed_dirs" | grep -v "^$dir")
         done
-        echo $changed_dirs >> changed_dirs.txt
+        echo $changed_dirs > changed_dirs.txt
 
     - name: Run Terratest
       run: |
         changed_dirs=$(cat changed_dirs.txt)
-        cat $changed_dirs
         for dir in $changed_dirs; do
           echo "------------------------------"
           echo "Test against: ${{ env.base_dir }}/$dir"
