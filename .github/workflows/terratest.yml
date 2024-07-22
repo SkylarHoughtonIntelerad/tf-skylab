@@ -1,4 +1,3 @@
-# useful comment
 name: terratest
 
 on:
@@ -10,7 +9,7 @@ on:
       - main
 
 jobs:
-  detect-and-test:
+  terratest:
     runs-on: ubuntu-latest
     env:
       EXCLUDED_DIRS: ".github test" #space-delimited list for multiple exclusions
@@ -46,13 +45,5 @@ jobs:
           cd ${{ env.base_dir }}/$dir
           terraform init
           pwd
-          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
+          go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE >> ${{ env.base_dir }}/$dir/terratest.txt
         done
-
-    # TODO: determine best way to pair success runs with commit hash, and store in dir that was ran against. Succeed workflow if recorded hash is before the one that was successful
-    # - name: Upload Test Results
-    #   if: failure()
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: test-results
-    #     path: /path/to/test-results
