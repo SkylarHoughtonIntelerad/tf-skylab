@@ -7,7 +7,7 @@ import (
 )
 
 // Helper function to run a command and capture its output
-func runCommand(t *testing.T, name string, args ...string) (string, error) {
+func runCommand(dir string, name string, args ...string) (string, error) {
 	cmd := exec.Command(name, args...)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -17,13 +17,11 @@ func runCommand(t *testing.T, name string, args ...string) (string, error) {
 }
 
 func TestTerraformInit(t *testing.T) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Failed to get current working directory: %v", err)
-	}
-	t.Logf("Current working directory: %s", cwd)
+	dirFlag := flag.String("dir", ".", "Directory containing Terraform files")
+	flag.Parse()
+	dir := *dirFlag
 	
-	output, err := runCommand(t, "terraform", "init", "-input=false")
+	output, err := runCommand(dir, "terraform", "init", "-input=false")
 	if err != nil {
 		t.Fatalf("terraform init failed: %v\nOutput: %s", err, output)
 	}
@@ -31,7 +29,11 @@ func TestTerraformInit(t *testing.T) {
 }
 
 func TestTerraformValidate(t *testing.T) {
-	output, err := runCommand(t, "terraform", "validate")
+	dirFlag := flag.String("dir", ".", "Directory containing Terraform files")
+	flag.Parse()
+	dir := *dirFlag
+
+	output, err := runCommand(dir, "terraform", "validate")
 	if err != nil {
 		t.Fatalf("terraform validate failed: %v\nOutput: %s", err, output)
 	}
