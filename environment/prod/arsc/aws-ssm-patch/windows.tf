@@ -1,4 +1,4 @@
-#Test Group patches a week before prod
+##Test Group patches a week before prod
 module "testgroup-patch-window" {
   source            = "git::ssh://git@github.com/dicomgrid/pt-modules.git//aws/ssm-maintenance-window?ref=master"
   window_name = "${local.testgroup_patch_name}-Patch"
