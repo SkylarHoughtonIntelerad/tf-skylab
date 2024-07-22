@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EXCLUDED_DIRS: ".github test" #space-delimited list for multiple exclusions
+      TEST_PATH: "test"
 
     steps:
     - name: Checkout code
@@ -38,15 +39,15 @@ jobs:
        
     - name: Run Terratest
       run: |
-        cd ${{ env.base_dir }}/test/
+        cd ${{ env.base_dir }}/$TEST_PATH/
         go mod download
-        ls ${{ env.base_dir }}/test/
+        ls ${{ env.base_dir }}/$TEST_PATH/
         for dir in ${{ env.changed_dirs }}; do
           cd ${{ env.base_dir }}
           ls -al
           cd $dir
           terraform init
-          go test -v ${{ env.base_dir }}/test/...
+          go test -v ${{ env.base_dir }}/$TEST_PATH/...
         done
 
     # TODO: determine best way to pair success runs with commit hash, and store in dir that was ran against. Succeed workflow if recorded hash is before the one that was successful
