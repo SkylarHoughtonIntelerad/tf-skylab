@@ -1,3 +1,3 @@
-module tf_validate.go
+module tf.go
 
 go 1.22.5
