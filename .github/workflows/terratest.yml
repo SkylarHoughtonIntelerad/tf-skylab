@@ -40,7 +40,7 @@ jobs:
           echo "------------------------------"
           echo "Test against: ${{ env.base_dir }}/$dir"
           if [ -d "$dir" ]; then 
-            go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE --dir ${{ env.base_dir }}/$dir
+            go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
           else
             echo "Directory does not exist on non-default branch: $dir"
             echo "Cannot execute test."
