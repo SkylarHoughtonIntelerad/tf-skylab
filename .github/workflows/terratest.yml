@@ -36,7 +36,7 @@ jobs:
     - run: | 
         changed_dirs=$(cat changed_dirs.txt)
         for dir in $changed_dirs; do
-          cat $dir
+          ls ${{ env.base_dir }}/$dir
         done
     # - name: Run Terratest
     #   run: |
