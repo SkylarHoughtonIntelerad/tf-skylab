@@ -35,7 +35,7 @@ jobs:
     - name: Run Terratest
       run: |
         changed_dirs=$(cat changed_dirs.txt)
-        for dir in ${{ changed_dirs }}; do
+        for dir in $changed_dirs; do
           cd ${{ env.base_dir }}/$dir
           go test -v ${{ env.base_dir }}/$TEST_PATH/$TEST_FILE
         done
