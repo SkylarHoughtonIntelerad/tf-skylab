@@ -21,18 +21,20 @@ func runCommand(t *testing.T, dir string, name string, args ...string) (string, 
 	return out.String(), err
 }
 
-func TestTerraformValidate(t *testing.T) {
-	output, err := runCommand(t, dir, "terraform", "init", "-input=false")
-	if err != nil {
-		t.Fatalf("terraform init failed: %v\nOutput: %s", err, output)
+func TestTerraform(t *testing.T) {
+	// init
+	initOutput, initErr := runCommand(t, dir, "terraform", "init", "-input=false")
+	if initErr != nil {
+		t.Fatalf("terraform init failed: %v\nOutput: %s", initErr, initOutput)
 	}
-	t.Logf("terraform init succeeded\nOutput: %s", output)
+	t.Logf("terraform init succeeded\nOutput: %s", initOutput)
 
-	output, err := runCommand(t, dir, "terraform", "validate")
-	if err != nil {
-		t.Fatalf("terraform validate failed: %v\nOutput: %s", err, output)
+	// validate
+	validateOutput, validateErr := runCommand(t, dir, "terraform", "validate")
+	if validateErr != nil {
+		t.Fatalf("terraform validate failed: %v\nOutput: %s", validateErr, validateOutput)
 	}
-	t.Logf("terraform validate succeeded\nOutput: %s", output)
+	t.Logf("terraform validate succeeded\nOutput: %s", validateOutput)
 }
 
 func TestMain(m *testing.M) {
