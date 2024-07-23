@@ -19,6 +19,11 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Setup Modules Trust
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.MODULES_PRIVATE_KEY }}
+
     - name: Get base dir
       run: |
         base_dir=$(pwd)
