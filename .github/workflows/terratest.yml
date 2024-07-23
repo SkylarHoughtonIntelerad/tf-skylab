@@ -38,6 +38,9 @@ jobs:
         echo $changed_dirs > changed_dirs.txt
 
     - name: Run Terratest
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         changed_dirs=$(cat changed_dirs.txt)
         for dir in $changed_dirs; do
