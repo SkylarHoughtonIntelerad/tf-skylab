@@ -11,10 +11,10 @@ locals {
 locals {
   testgroup_patch_window_id  = module.testgroup-patch-window.maintenance-window-id
   testgroup_reboot_window_id = module.testgroup-reboot-window.maintenance-window-id
-  group1_patch_window_id  = module.group1-patch-window.maintenance-window-id
-  group2_patch_window_id  = module.group2-patch-window.maintenance-window-id
-  group1_reboot_window_id = module.group1-reboot-window.maintenance-window-id
-  group2_reboot_window_id = module.group2-reboot-window.maintenance-window-id
+  group1_patch_window_id     = module.group1-patch-window.maintenance-window-id
+  group2_patch_window_id     = module.group2-patch-window.maintenance-window-id
+  group1_reboot_window_id    = module.group1-reboot-window.maintenance-window-id
+  group2_reboot_window_id    = module.group2-reboot-window.maintenance-window-id
 }
 variable "description" {
   type        = string
